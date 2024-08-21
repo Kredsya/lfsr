@@ -13,7 +13,7 @@ void usage() {
     printf("usage : ./lfsr <1:how many generate> <2:initial value>\n");
     printf("example : ./lfsr 5 000...010\n");
     printf("\n");
-    printf("1: How many bits(<= 2^32 bits) you want to ganerate.\n");
+    printf("1: How many bits(<= 2^31-1 bits) you want to ganerate.\n");
     printf("2: You need to input initial values(<= 128-bits) as binary string.\n");
 }
 
@@ -30,7 +30,7 @@ bool checkInvalidInput(int argc, char *input[]) {
         }
     }
 
-    unsigned int test = atoi(input[1]);
+    int test = atoi(input[1]);
     if(test < 0) {
         printf("[Error] input:1 is not positive integer.\n\n");
         return true;
@@ -56,13 +56,17 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    char *input = argv[1];
-    int inputLen = strlen(input);
+    int numGenerating = atoi(argv[1]);
+    
+    char *inputInitialValue = argv[2];
+    int inputLen = strlen(inputInitialValue);
 
-    bool initial_value[128] = {};
-    for (int i = 0; i < strlen(input); i++) {
-        initial_value[i] = (input[inputLen - i - 1] - '1');
+    bool initialValue[128] = {};
+    for (int i = 0; i < strlen(inputInitialValue); i++) {
+        initialValue[i] = (inputInitialValue[inputLen - i - 1] - '0');
     }
+
+    
 
     return 0;
 }
