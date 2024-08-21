@@ -50,6 +50,10 @@ bool checkInvalidInput(int argc, char *input[]) {
     return false;
 }
 
+void lfsr(int n, bool *iv) {
+    return;
+}
+
 int main(int argc, char *argv[]) {
     if (checkInvalidInput(argc, argv)) {
         usage();
@@ -66,7 +70,7 @@ int main(int argc, char *argv[]) {
         initialValue[i] = (inputInitialValue[inputLen - i - 1] - '0');
     }
 
-    
+    lfsr(numGenerating, initialValue);
 
     return 0;
 }
