@@ -5,21 +5,45 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 void usage() {
-    printf("usage : ./lfsr <initial value>\n");
-    printf("example : ./lfsr 0000...011010\n");
-    printf("You need to input initial values(<= 128-bits) as binary string.\n");
+    printf("usage : ./lfsr <1:how many generate> <2:initial value>\n");
+    printf("example : ./lfsr 5 000...010\n");
+    printf("\n");
+    printf("1: How many bits(<= 2^32 bits) you want to ganerate.\n");
+    printf("2: You need to input initial values(<= 128-bits) as binary string.\n");
 }
 
-bool checkInvalidInput(char *input) {
-    if (strlen(input) > 128) {
+bool checkInvalidInput(int argc, char *input[]) {
+    if(argc != 3) {
+        printf("[Error] Invalid number of input arguments.\n\n");
+        return true;
+    }
+    
+    for(int i=0; i<strlen(input[1]); i++) {
+        if(!isdigit(input[1][i])) {
+            printf("[Error] input:1 is not digit.\n\n");
+            return true;
+        }
+    }
+
+    unsigned int test = atoi(input[1]);
+    if(test < 0) {
+        printf("[Error] input:1 is not positive integer.\n\n");
+        return true;
+    }
+    
+    if (strlen(input[2]) > 128) {
+        printf("[Error] length of input:2 is bigger than 128.\n\n");
         return true;
     }
 
-    for (int i = 0; i < strlen(input); i++) {
-        if (input[i] != '0' && input[i] != '1') {
+    for (int i = 0; i < strlen(input[2]); i++) {
+        if (input[2][i] != '0' && input[2][i] != '1') {
+            printf("[Error] input:2 is not binary string.\n\n");
             return true;
         }
     }
@@ -27,7 +51,7 @@ bool checkInvalidInput(char *input) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 2 || checkInvalidInput(argv[1])) {
+    if (checkInvalidInput(argc, argv)) {
         usage();
         return -1;
     }
